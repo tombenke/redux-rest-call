@@ -1,6 +1,6 @@
 import { stringify } from 'querystring'
 /**
- * quesry string handler function
+ * query string handler function
  *
  * @module redux-rest-call
  */

@@ -1,6 +1,11 @@
 import fetch from 'isomorphic-fetch'
 import _ from 'lodash'
 import cookie from 'cookie'
+/**
+ * rest call function
+ *
+ * @module redux-rest-call
+ */
 
 const getHeaders = headers => {
     let hmap = {}
@@ -44,6 +49,21 @@ const getWindowOrigin = () =>
         (window.location.port ? ':' + window.location.port : '')
 const getOriginHost = () => (runInBrowser() ? getWindowOrigin() : 'http://localhost')
 const getOrigin = () => getOriginHost() + (_.has(process.env, 'REST_API_PORT') ? `:${process.env.REST_API_PORT}` : '')
+
+/**
+ * Make REST call
+ *
+ * @arg {Function} dispatch - The dispatch function of the redux store
+ *
+ * @return {Function} - A function with the following signature:
+ * `function(uriPath: String, config: Object, requestActionFun: Function, responseActionFun: Function)`,
+ * where `uriPath` is the URI of the REST endpoint to call, config is the config parameters of call,
+ * such as `method`, `headers`, etc., the two last parameters are redux action functions.
+ * `requestActionFun` will be called immediately before the REST call started, and the `responseActionFun`
+ * will be called with the REST response including the status and the body.
+ *
+ * @function
+ */
 
 export const makeRestCall = dispatch => (uriPath, config, requestActionFun, responseActionFun) => {
     const origin = getOrigin()
