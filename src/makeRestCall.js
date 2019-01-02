@@ -103,7 +103,7 @@ export const makeRestCall = dispatch => (uriPath, config, requestActionFun, resp
                             dispatch(responseActionFun(data, hmap))
                             return data
                         } else {
-                            console.log('Promise reject will happen from fetch...')
+                            //console.log('Promise reject will happen from fetch...')
                             return Promise.reject({
                                 ok: response.ok,
                                 status: response.status,
@@ -118,7 +118,7 @@ export const makeRestCall = dispatch => (uriPath, config, requestActionFun, resp
             }
         })
         .catch(ex => {
-            console.log('A fetch.catch happened: ', ex, JSON.stringify(config, null, '  '))
+            //console.log('A fetch.catch happened: ', ex, JSON.stringify(config, null, '  '))
             dispatch(responseActionFun(ex))
             return ex
         })

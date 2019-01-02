@@ -87,7 +87,6 @@ describe('makeRestCall', () => {
         const store = mockStore({ userProfile: { getUserProfileState: 'IDLE' } })
 
         return store.dispatch(getUserProfile()).then(() => {
-            console.log(JSON.stringify(store.getActions()))
             expect(store.getActions()).toEqual(expectedActions)
         })
     })
@@ -113,7 +112,6 @@ describe('makeRestCall', () => {
         const store = mockStore({ userProfile: { getUserProfileState: 'IDLE' } })
 
         return store.dispatch(getUserProfile()).then(() => {
-            console.log(JSON.stringify(store.getActions()))
             expect(store.getActions()).toEqual(expectedActions)
         })
     })
@@ -134,7 +132,6 @@ describe('makeRestCall', () => {
         const store = mockStore({ userProfile: { getUserProfileState: 'IDLE' } })
 
         return store.dispatch(getUserProfile()).then(() => {
-            console.log(JSON.stringify(store.getActions()))
             expect(store.getActions()).toEqual(expectedActions)
         })
     })
