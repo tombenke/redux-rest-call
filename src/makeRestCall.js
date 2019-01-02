@@ -4,7 +4,7 @@ import cookie from 'cookie'
 /**
  * rest call function
  *
- * @module redux-rest-call
+ * @module makeRestCall
  */
 
 const getHeaders = headers => {

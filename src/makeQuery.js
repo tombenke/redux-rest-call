@@ -2,7 +2,7 @@ import { stringify } from 'querystring'
 /**
  * query string handler function
  *
- * @module redux-rest-call
+ * @module makeQuery
  */
 
 /**
