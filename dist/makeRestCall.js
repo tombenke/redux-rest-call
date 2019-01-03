@@ -19,7 +19,11 @@ var _cookie2 = _interopRequireDefault(_cookie);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//require('es6-promise').polyfill()
+/**
+ * rest call function
+ *
+ * @module makeRestCall
+ */
 
 var getHeaders = function getHeaders(headers) {
     var hmap = {};
@@ -46,13 +50,13 @@ var getCookies = function getCookies(headers) {
         return [];
     }
 };
-var findCookie = function findCookie(cookies, cookieName) {
-    var result = null;
-    cookies.forEach(function (cookie) {
-        if (!_lodash2.default.isUndefined(cookie[cookieName])) result = cookie[cookieName];
-    });
-    return result;
-};
+//const findCookie = (cookies, cookieName) => {
+//    let result = null
+//    cookies.forEach(cookie => {
+//        if (!_.isUndefined(cookie[cookieName])) result = cookie[cookieName]
+//    })
+//    return result
+//}
 
 var runInBrowser = function runInBrowser() {
     return !(typeof window === 'undefined');
@@ -67,6 +71,21 @@ var getOrigin = function getOrigin() {
     return getOriginHost() + (_lodash2.default.has(process.env, 'REST_API_PORT') ? ':' + process.env.REST_API_PORT : '');
 };
 
+/**
+ * Make REST call
+ *
+ * @arg {Function} dispatch - The dispatch function of the redux store
+ *
+ * @return {Function} - A function with the following signature:
+ * `function(uriPath: String, config: Object, requestActionFun: Function, responseActionFun: Function)`,
+ * where `uriPath` is the URI of the REST endpoint to call, config is the config parameters of call,
+ * such as `method`, `headers`, etc., the two last parameters are redux action functions.
+ * `requestActionFun` will be called immediately before the REST call started, and the `responseActionFun`
+ * will be called with the REST response including the status and the body.
+ *
+ * @function
+ */
+
 var makeRestCall = exports.makeRestCall = function makeRestCall(dispatch) {
     return function (uriPath, config, requestActionFun, responseActionFun) {
         var origin = getOrigin();
@@ -78,22 +97,22 @@ var makeRestCall = exports.makeRestCall = function makeRestCall(dispatch) {
         }
         return (0, _isomorphicFetch2.default)('' + origin + uriPath, config).then(function (response) {
             var hmap = getHeaders(response.headers);
-            var cookies = getCookies(hmap);
-            if (!runInBrowser()) {
-                var cookiesSet = findCookie(cookies, 'set-cookie');
-                // console.log('cookiesSet: ', cookiesSet)
-                // TODO: store cookies
-            }
+            //const cookies = getCookies(hmap)
+            //if (!runInBrowser()) {
+            //const cookiesSet = findCookie(cookies, 'set-cookie')
+            // console.log('cookiesSet: ', cookiesSet)
+            // TODO: store cookies
+            //}
 
             //console.log('response: ', uriPath, config, response, hmap)
-            if (response.status === 401 || response.status === 404 || response.status === 302) {
-                var result = new Error({
+            if (_lodash2.default.includes([302, 401, 404, 409], response.status)) {
+                var result = {
                     ok: response.ok,
                     status: response.status,
                     statusText: response.statusText,
                     headers: hmap,
                     cookies: getCookies(hmap)
-                });
+                };
                 dispatch(responseActionFun(result));
                 return Promise.resolve(result);
             } else {
@@ -105,7 +124,7 @@ var makeRestCall = exports.makeRestCall = function makeRestCall(dispatch) {
                             dispatch(responseActionFun(data, hmap));
                             return data;
                         } else {
-                            console.log('Promise reject will happen from fetch...');
+                            //console.log('Promise reject will happen from fetch...')
                             return Promise.reject({
                                 ok: response.ok,
                                 status: response.status,
@@ -119,8 +138,8 @@ var makeRestCall = exports.makeRestCall = function makeRestCall(dispatch) {
                 throw new TypeError('The server response is not JSON!');
             }
         }).catch(function (ex) {
-            console.log('A fetch.catch happened: ', ex, JSON.stringify(config, null, '  '));
-            dispatch(responseActionFun(new Error(ex)));
+            //console.log('A fetch.catch happened: ', ex, JSON.stringify(config, null, '  '))
+            dispatch(responseActionFun(ex));
             return ex;
         });
     };
