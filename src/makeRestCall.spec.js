@@ -48,7 +48,7 @@ describe('makeRestCall', () => {
 
     // GET /auth/profile
     it('handle 200 OK', () => {
-        var server = nock(origin)
+        nock(origin)
             .get(`/auth/profile${queryParamsStr}`)
             .reply(200, responseBody)
 
@@ -64,7 +64,7 @@ describe('makeRestCall', () => {
     })
 
     it('handle 404 ERR', () => {
-        var server = nock(origin)
+        nock(origin)
             .get(`/auth/profile`)
             .reply(404, responseBody)
 
@@ -92,7 +92,7 @@ describe('makeRestCall', () => {
     })
 
     it('handle 500 ERR', () => {
-        var server = nock(origin)
+        nock(origin)
             .get(`/auth/profile`)
             .reply(500, {})
 
@@ -117,7 +117,7 @@ describe('makeRestCall', () => {
     })
 
     it('handle 500 ERR', () => {
-        var server = nock(origin)
+        nock(origin)
             .get(`/auth/profile`)
             .reply(500, 'Wrong format')
 
