@@ -116,10 +116,10 @@ describe('makeRestCall', () => {
         })
     })
 
-    it('handle 500 ERR', () => {
+    it('handle non-JSON response format', () => {
         nock(origin)
             .get(`/auth/profile`)
-            .reply(500, 'Wrong format')
+            .reply(200, 'Wrong format')
 
         const expectedActions = [
             { type: 'GET_USER_PROFILE_REQUEST' },
@@ -133,6 +133,15 @@ describe('makeRestCall', () => {
 
         return store.dispatch(getUserProfile()).then(() => {
             expect(store.getActions()).toEqual(expectedActions)
+        })
+    })
+
+    it('handle server not responding error', () => {
+        const store = mockStore({ userProfile: { getUserProfileState: 'IDLE' } })
+
+        return store.dispatch(getUserProfile()).then(() => {
+            const actions = store.getActions()
+            expect(actions[1]).toHaveProperty('error', true)
         })
     })
 })

@@ -65,7 +65,7 @@ describe('makeRestCall', function () {
 
     // GET /auth/profile
     it('handle 200 OK', function () {
-        var server = (0, _nock2.default)(origin).get('/auth/profile' + queryParamsStr).reply(200, responseBody);
+        (0, _nock2.default)(origin).get('/auth/profile' + queryParamsStr).reply(200, responseBody);
 
         var expectedActions = [{ type: 'GET_USER_PROFILE_REQUEST' }, { type: 'GET_USER_PROFILE_RESPONSE', payload: responseBody }];
         var store = mockStore({ userProfile: { getUserProfileState: 'IDLE' } });
@@ -76,7 +76,7 @@ describe('makeRestCall', function () {
     });
 
     it('handle 404 ERR', function () {
-        var server = (0, _nock2.default)(origin).get('/auth/profile').reply(404, responseBody);
+        (0, _nock2.default)(origin).get('/auth/profile').reply(404, responseBody);
 
         var expectedPayload = {
             cookies: [],
@@ -99,7 +99,7 @@ describe('makeRestCall', function () {
     });
 
     it('handle 500 ERR', function () {
-        var server = (0, _nock2.default)(origin).get('/auth/profile').reply(500, {});
+        (0, _nock2.default)(origin).get('/auth/profile').reply(500, {});
 
         var expectedActions = [{ type: 'GET_USER_PROFILE_REQUEST' }, {
             type: 'GET_USER_PROFILE_RESPONSE',
@@ -119,7 +119,7 @@ describe('makeRestCall', function () {
     });
 
     it('handle 500 ERR', function () {
-        var server = (0, _nock2.default)(origin).get('/auth/profile').reply(500, 'Wrong format');
+        (0, _nock2.default)(origin).get('/auth/profile').reply(500, 'Wrong format');
 
         var expectedActions = [{ type: 'GET_USER_PROFILE_REQUEST' }, {
             type: 'GET_USER_PROFILE_RESPONSE',

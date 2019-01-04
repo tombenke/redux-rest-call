@@ -84,7 +84,7 @@ export const makeRestCall = dispatch => (uriPath, config, requestActionFun, resp
             //}
 
             //console.log('response: ', uriPath, config, response, hmap)
-            if (_.includes([302, 401, 404, 409], response.status)) {
+            if (_.includes([302, 401, 404, 409, 500], response.status)) {
                 const result = {
                     ok: response.ok,
                     status: response.status,
@@ -118,7 +118,7 @@ export const makeRestCall = dispatch => (uriPath, config, requestActionFun, resp
             }
         })
         .catch(ex => {
-            //console.log('A fetch.catch happened: ', ex, JSON.stringify(config, null, '  '))
+            // console.log('A fetch.catch happened: ', ex, JSON.stringify(config, null, '  '))
             dispatch(responseActionFun(ex))
             return ex
         })
