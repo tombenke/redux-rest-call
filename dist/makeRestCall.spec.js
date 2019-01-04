@@ -118,8 +118,8 @@ describe('makeRestCall', function () {
         });
     });
 
-    it('handle 500 ERR', function () {
-        (0, _nock2.default)(origin).get('/auth/profile').reply(500, 'Wrong format');
+    it('handle non-JSON response format', function () {
+        (0, _nock2.default)(origin).get('/auth/profile').reply(200, 'Wrong format');
 
         var expectedActions = [{ type: 'GET_USER_PROFILE_REQUEST' }, {
             type: 'GET_USER_PROFILE_RESPONSE',
@@ -130,6 +130,15 @@ describe('makeRestCall', function () {
 
         return store.dispatch(getUserProfile()).then(function () {
             (0, _expect2.default)(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
+    it('handle server not responding error', function () {
+        var store = mockStore({ userProfile: { getUserProfileState: 'IDLE' } });
+
+        return store.dispatch(getUserProfile()).then(function () {
+            var actions = store.getActions();
+            (0, _expect2.default)(actions[1]).toHaveProperty('error', true);
         });
     });
 });

@@ -105,7 +105,7 @@ var makeRestCall = exports.makeRestCall = function makeRestCall(dispatch) {
             //}
 
             //console.log('response: ', uriPath, config, response, hmap)
-            if (_lodash2.default.includes([302, 401, 404, 409], response.status)) {
+            if (_lodash2.default.includes([302, 401, 404, 409, 500], response.status)) {
                 var result = {
                     ok: response.ok,
                     status: response.status,
@@ -138,7 +138,7 @@ var makeRestCall = exports.makeRestCall = function makeRestCall(dispatch) {
                 throw new TypeError('The server response is not JSON!');
             }
         }).catch(function (ex) {
-            //console.log('A fetch.catch happened: ', ex, JSON.stringify(config, null, '  '))
+            // console.log('A fetch.catch happened: ', ex, JSON.stringify(config, null, '  '))
             dispatch(responseActionFun(ex));
             return ex;
         });
