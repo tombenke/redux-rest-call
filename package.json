@@ -1,7 +1,7 @@
 {
   "name": "redux-rest-call",
   "description": "A simple module to make REST calls from an async redux action",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "tags": [
     "redux",
     "fetch",
